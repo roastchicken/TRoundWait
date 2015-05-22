@@ -1,7 +1,7 @@
 "AddonInfo"
 {
 	"name"		"TRoundWait"
-	"version"	"1"
+	"version"	"0.2"
 	"up_date"	"05/21/15"
 	"author_name"	"roastchicken"
   "author_email" "roast@thatoneprogrammerkid.com"
