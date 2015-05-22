@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"		"TRoundWait"
+	"version"	"1"
+	"up_date"	"05/21/15"
+	"author_name"	"roastchicken"
+  "author_email" "roast@thatoneprogrammerkid.com"
+	"author_url"	"thatoneprogrammerkid.com"
+  
+	"info"		""
+}
