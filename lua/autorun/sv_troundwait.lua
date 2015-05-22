@@ -64,7 +64,7 @@ function setTraitors( table )
     rand = math.random()
     if rand < troundwait_probability:GetInt() then
       v:SetRole(ROLE_TRAITOR)
-      ServerLog(v .. "was made a traitor" .. /n)
+      ServerLog(v .. "was made a traitor\n")
     end
   end
 end
