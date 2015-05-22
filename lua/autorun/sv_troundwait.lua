@@ -1,23 +1,22 @@
 if not SERVER then return end
 
 --number of rounds before the probability change occurs
-rounds = CreateConVar( "troundwait_rounds", "10", FCVAR_ARCHIVE )
+troundwait_rounds = CreateConVar( "troundwait_rounds", "10", FCVAR_ARCHIVE )
 --probability for forcing traitor rounds. any value between 0 and 1.
-probabilty = CreateConVar( "troundwait_probability", "1", FCVAR_ARCHIVE )
+troundwait_probabilty = CreateConVar( "troundwait_probability", "1", FCVAR_ARCHIVE )
 
 if not sql.TableExists( "troundwait" ) then
 	sql.Query( "CREATE TABLE IF NOT EXISTS troundwait ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, player INTEGER NOT NULL, rounds INTEGER NOT NULL );" )
-	sql.Query( "CREATE INDEX IDX_UTIME_PLAYER ON troundwait ( player DESC );" )
+	sql.Query( "CREATE INDEX IDX_TROUNDWAIT_PLAYER ON troundwait ( player DESC );" )
 end
 
-hook.Add( "TTTBeginRound", "TRoundWaitRoundStart", onRound() )
-
 function onRoundStart()
+  ServerLog("onRoundStart ran\n")
   local innos = {}
 
   for k,v in pairs(player.GetAll()) do
     if IsValid(v) and (not v:IsSpec()) then
-      if not v:IsTraitor then
+      if not v:IsTraitor() then
         table.insert(innos, v:UniqueID())
       end
     end
@@ -28,7 +27,10 @@ function onRoundStart()
   
 end
 
+hook.Add( "TTTBeginRound", "TRoundWaitRoundStart", onRoundStart )
+
 function logInnocents( table )
+  ServerLog("logInnocents ran\n")
   for k,v in pairs(table) do
     local row = sql.QueryRow( "SELECT rounds FROM troundwait WHERE player = " .. v .. ";" )
     
@@ -41,6 +43,7 @@ function logInnocents( table )
 end
 
 function checkRounds( table )
+  ServerLog("checkRounds ran\n")
   local ts = {}
 
   for k,v in pairs(table) do
@@ -56,10 +59,12 @@ function checkRounds( table )
 end
 
 function setTraitors( table )
+  ServerLog("setTraitors ran\n")
   for k,v in pairs(table) do
     rand = math.random()
     if rand < troundwait_probability:GetInt() then
       v:SetRole(ROLE_TRAITOR)
+      ServerLog(v .. "was made a traitor" .. /n)
     end
   end
 end
